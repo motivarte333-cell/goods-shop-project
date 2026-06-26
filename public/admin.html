@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리자 - 굿즈샵</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">굿즈샵</a>
+      <nav class="header-nav">
+        <a href="index.html">쇼핑</a>
+        <button class="btn-logout" onclick="logout()">로그아웃</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <p class="page-title">전체 결제 내역</p>
+    <div class="card" style="padding: 16px;">
+      <div class="admin-table-wrap">
+        <table id="admin-table">
+          <thead>
+            <tr>
+              <th>날짜</th>
+              <th>이메일</th>
+              <th>상품</th>
+              <th>금액</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+          <tbody id="admin-tbody">
+            <tr><td colspan="5" class="loading">불러오는 중...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+    function formatPrice(p) { return p.toLocaleString('ko-KR') + '원' }
+    function formatDate(iso) {
+      return new Date(iso).toLocaleString('ko-KR', {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit',
+      })
+    }
+    function badgeHTML(status) {
+      const map = { paid: ['paid', '결제완료'], pending: ['pending', '대기중'], failed: ['failed', '실패'] }
+      const [cls, label] = map[status] || ['pending', status]
+      return `<span class="badge badge-${cls}">${label}</span>`
+    }
+    async function logout() {
+      await supabase.auth.signOut()
+      location.href = 'index.html'
+    }
+
+    async function loadAdmin() {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session || session.user.email !== 'admin@admin.com') {
+        location.href = 'index.html'
+        return
+      }
+
+      const { data: orders, error } = await supabase
+        .from('orders')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      const tbody = document.getElementById('admin-tbody')
+
+      if (error || !orders?.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty" style="padding:32px;text-align:center">결제 내역 없음</td></tr>'
+        return
+      }
+
+      tbody.innerHTML = orders.map(o => `
+        <tr>
+          <td style="white-space:nowrap">${formatDate(o.created_at)}</td>
+          <td>${o.user_email}</td>
+          <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.product_name}</td>
+          <td style="white-space:nowrap">${formatPrice(o.total_price)}</td>
+          <td>${badgeHTML(o.status)}</td>
+        </tr>
+      `).join('')
+    }
+
+    loadAdmin()
+  </script>
+</body>
+</html>

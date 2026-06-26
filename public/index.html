@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>굿즈샵</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">굿즈샵</a>
+      <nav class="header-nav" id="nav"></nav>
+    </div>
+  </header>
+
+  <main>
+    <p class="page-title">상품 목록</p>
+    <div id="product-list" class="product-grid">
+      <div class="loading">상품을 불러오는 중...</div>
+    </div>
+  </main>
+
+  <!-- 구매 모달 -->
+  <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+    <div class="modal">
+      <img id="modal-img" src="" alt="" class="modal-img">
+      <div class="modal-name" id="modal-name"></div>
+      <div class="modal-price" id="modal-price"></div>
+      <button class="btn btn-primary" onclick="pay()">결제하기</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://js.tosspayments.com/v1/payment"></script>
+  <script src="js/products.js"></script>
+  <script src="js/payment.js"></script>
+</body>
+</html>
