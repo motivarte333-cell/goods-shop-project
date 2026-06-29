@@ -1,4 +1,4 @@
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 function formatPrice(price) {
   return price.toLocaleString('ko-KR') + '원'
