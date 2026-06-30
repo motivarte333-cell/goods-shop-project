@@ -21,7 +21,13 @@ async function login() {
   if (!email || !password) { showToast('이메일과 비밀번호를 입력해주세요.', true); return }
 
   const { error } = await supabase.auth.signInWithPassword({ email, password })
-  if (error) { showToast(error.message, true); return }
+  if (error) {
+    const msg = error.message === 'Invalid login credentials'
+      ? '이메일 또는 비밀번호가 올바르지 않습니다.'
+      : error.message
+    showToast(msg, true)
+    return
+  }
 
   const redirect = new URLSearchParams(location.search).get('redirect') || 'index.html'
   location.href = redirect
@@ -33,15 +39,16 @@ async function signup() {
   if (!email || !password) { showToast('이메일과 비밀번호를 입력해주세요.', true); return }
   if (password.length < 6) { showToast('비밀번호는 6자 이상이어야 합니다.', true); return }
 
-  const { error } = await supabase.auth.signUp({ email, password })
+  const { data, error } = await supabase.auth.signUp({ email, password })
   if (error) { showToast(error.message, true); return }
 
-  showToast('회원가입 완료! 로그인합니다.')
-  setTimeout(() => {
-    supabase.auth.signInWithPassword({ email, password }).then(() => {
-      location.href = 'index.html'
-    })
-  }, 1000)
+  if (data.session) {
+    showToast('회원가입 완료!')
+    setTimeout(() => { location.href = 'index.html' }, 800)
+  } else {
+    showToast('확인 메일을 보냈습니다. 받은 편지함을 확인 후 로그인해 주세요.')
+    setTimeout(() => switchTab('login'), 2500)
+  }
 }
 
 // 이미 로그인된 경우 바로 이동
