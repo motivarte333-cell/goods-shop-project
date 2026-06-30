@@ -1,4 +1,4 @@
-const CACHE_NAME = 'turingshop-v1'
+const CACHE_NAME = 'turingshop-v2'
 
 const PRECACHE_URLS = [
   '/goods-shop-project/',

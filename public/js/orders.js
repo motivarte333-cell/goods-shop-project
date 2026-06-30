@@ -33,7 +33,12 @@ async function loadOrders() {
 
   const container = document.getElementById('order-list')
 
-  if (error || !orders?.length) {
+  if (error) {
+    container.innerHTML = `<div class="empty"><div class="empty-text">불러오기 실패: ${error.message}</div></div>`
+    return
+  }
+
+  if (!orders?.length) {
     container.innerHTML = `
       <div class="empty">
         <div class="empty-icon">🛍️</div>
