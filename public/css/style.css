@@ -76,6 +76,69 @@ header {
   color: var(--danger) !important;
 }
 
+/* 히어로 섹션 */
+.hero {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%);
+  color: white;
+  text-align: center;
+  padding: 64px 24px 72px;
+}
+
+.hero-inner {
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+
+.hero-title {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.hero-sub {
+  font-size: 15px;
+  opacity: .85;
+  margin: 0;
+}
+
+.btn-hero {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 32px;
+  background: white;
+  color: var(--primary);
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+  width: auto;
+}
+
+.btn-hero:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+.btn-hero:active { transform: scale(.97); }
+
 /* 메인 컨테이너 */
 main {
   max-width: 1024px;
