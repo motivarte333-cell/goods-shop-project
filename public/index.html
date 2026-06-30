@@ -2,8 +2,14 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>굿즈샵</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Turingshop</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2563eb">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Turingshop">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -38,5 +44,13 @@
   <script src="https://js.tosspayments.com/v1/payment"></script>
   <script src="js/products.js"></script>
   <script src="js/payment.js"></script>
+  <script src="js/pwa-install.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/goods-shop-project/sw.js', { scope: '/goods-shop-project/' })
+      })
+    }
+  </script>
 </body>
 </html>
